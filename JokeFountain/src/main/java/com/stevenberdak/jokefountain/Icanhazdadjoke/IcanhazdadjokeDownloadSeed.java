@@ -1,4 +1,4 @@
-package icanhazdadjoke;
+package com.stevenberdak.jokefountain.Icanhazdadjoke;
 
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
@@ -13,7 +13,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.moshi.MoshiConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.Url;
 
 public class IcanhazdadjokeDownloadSeed implements DownloadSeed {
 

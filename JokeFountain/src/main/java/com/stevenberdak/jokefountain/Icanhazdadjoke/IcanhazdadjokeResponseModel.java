@@ -1,4 +1,4 @@
-package icanhazdadjoke;
+package com.stevenberdak.jokefountain.Icanhazdadjoke;
 
 public class IcanhazdadjokeResponseModel {
     public String joke;

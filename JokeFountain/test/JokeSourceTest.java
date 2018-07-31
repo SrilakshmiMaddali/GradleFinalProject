@@ -4,7 +4,7 @@ import com.stevenberdak.jokefountain.Models.Joke;
 
 import org.junit.Test;
 
-import icanhazdadjoke.IcanhazdadjokeDownloadSeed;
+import com.stevenberdak.jokefountain.Icanhazdadjoke.IcanhazdadjokeDownloadSeed;
 
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.core.IsNot.not;

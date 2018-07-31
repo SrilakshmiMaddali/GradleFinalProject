@@ -39,7 +39,7 @@ public class MainViewModel extends AndroidViewModel implements LifecycleObserver
         mJoke.observe(owner, observer);
 
         if (mJokeObserver == null) mJokeObserver = joke -> {
-            
+
             if (joke == null)
                 AppUtils.makeNormalToast(getApplication(), getApplication().getString(R.string.error_joke));
 

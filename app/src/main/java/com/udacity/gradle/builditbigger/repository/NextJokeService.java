@@ -3,12 +3,11 @@ package com.udacity.gradle.builditbigger.repository;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.JobIntentService;
-import android.util.Log;
 
 import com.stevenberdak.jokefountain.JokeSource;
 import com.stevenberdak.jokefountain.Models.Joke;
 
-import icanhazdadjoke.IcanhazdadjokeDownloadSeed;
+import com.stevenberdak.jokefountain.Icanhazdadjoke.IcanhazdadjokeDownloadSeed;
 
 public class NextJokeService extends JobIntentService {
     @Override
