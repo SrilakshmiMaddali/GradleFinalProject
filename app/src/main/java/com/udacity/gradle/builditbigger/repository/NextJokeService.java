@@ -12,7 +12,7 @@ import com.stevenberdak.jokefountain.Icanhazdadjoke.IcanhazdadjokeDownloadSeed;
 public class NextJokeService extends JobIntentService {
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
-        JokeSource source = JokeSource.getmInstance();
+        JokeSource source = JokeSource.getInstance();
 
         Joke result = source.nextJoke(new IcanhazdadjokeDownloadSeed());
 
