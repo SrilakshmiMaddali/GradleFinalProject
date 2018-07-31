@@ -17,6 +17,7 @@ public class MainRepository {
     public static final String BROADCAST_IN_JOKE = "com.udacity.gradle.builditbigger.BROADCAST_IN_JOKE";
     public static final String BUNDLE_KEY_JOKE_BODY = "joke_body";
     public static final String BUNDLE_KEY_JOKE_OPT_FOLLOWUP = "joke_followup";
+    private static final int NEXT_JOKE_SERVICE_ID = 1357908;
     private BroadcastReceiver mBroadcastReceiver;
     private IntentFilter mIntentFilter;
     private MutableLiveData<Joke> mCurrentJoke, mCachedJoke;
@@ -49,11 +50,11 @@ public class MainRepository {
 
     public void getNextJoke(Context ctx) {
         mCurrentJoke.setValue(mCachedJoke.getValue());
-        NextJokeService.enqueueWork(ctx, NextJokeService.class, 1357908, new Intent());
+        NextJokeService.enqueueWork(ctx, NextJokeService.class, NEXT_JOKE_SERVICE_ID, new Intent());
     }
 
     public void initJokeRepository(Context ctx) {
-        NextJokeService.enqueueWork(ctx, NextJokeService.class, 1357908, new Intent());
+        NextJokeService.enqueueWork(ctx, NextJokeService.class, NEXT_JOKE_SERVICE_ID, new Intent());
     }
 
     private class MainRepositoryBroadcastReceiver extends BroadcastReceiver {
