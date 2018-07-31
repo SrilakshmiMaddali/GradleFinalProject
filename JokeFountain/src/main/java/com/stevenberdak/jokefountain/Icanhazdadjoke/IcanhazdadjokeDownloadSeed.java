@@ -1,7 +1,5 @@
 package com.stevenberdak.jokefountain.Icanhazdadjoke;
 
-import com.squareup.moshi.JsonAdapter;
-import com.squareup.moshi.Moshi;
 import com.stevenberdak.jokefountain.DownloadSeed;
 import com.stevenberdak.jokefountain.LibStrings;
 import com.stevenberdak.jokefountain.Models.Joke;
@@ -17,15 +15,9 @@ import retrofit2.http.Headers;
 public class IcanhazdadjokeDownloadSeed implements DownloadSeed {
 
     private static final String BASE_URL = "https://icanhazdadjoke.com/";
-    Moshi moshi;
-    JsonAdapter<IcanhazdadjokeResponseModel> adapter;
-    Retrofit retroFit;
+    private Retrofit retroFit;
 
     public IcanhazdadjokeDownloadSeed() {
-        moshi = new Moshi.Builder().build();
-
-        adapter = moshi.adapter(IcanhazdadjokeResponseModel.class);
-
         retroFit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
@@ -45,7 +37,7 @@ public class IcanhazdadjokeDownloadSeed implements DownloadSeed {
             e.printStackTrace();
         }
 
-        if (response.status == 200)
+        if (response != null && response.status == 200)
             return new Joke(response.joke, null);
         else
             return new Joke(LibStrings.JOKE_ERROR, null);
