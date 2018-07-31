@@ -8,7 +8,7 @@ public class JokeSource {
 
     private static JokeSource mInstance;
 
-    private JokeSource() {
+    public JokeSource() {
 
     }
 
