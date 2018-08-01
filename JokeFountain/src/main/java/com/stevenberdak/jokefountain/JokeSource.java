@@ -1,6 +1,6 @@
 package com.stevenberdak.jokefountain;
 
-import com.stevenberdak.jokefountain.Models.Joke;
+import com.stevenberdak.jokefountain.Models.JokeData;
 
 public class JokeSource {
 
@@ -15,12 +15,12 @@ public class JokeSource {
         this.downloadSeed = downloadSeed;
     }
 
-    public Joke nextJoke(DownloadSeed downloadSeed) {
+    public JokeData nextJoke(DownloadSeed downloadSeed) {
         this.downloadSeed = downloadSeed;
         return nextJoke();
     }
 
-    public Joke nextJoke() {
+    public JokeData nextJoke() {
         return downloadSeed.getData();
     }
 

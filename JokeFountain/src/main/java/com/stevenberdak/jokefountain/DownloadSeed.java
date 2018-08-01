@@ -1,8 +1,8 @@
 package com.stevenberdak.jokefountain;
 
-import com.stevenberdak.jokefountain.Models.Joke;
+import com.stevenberdak.jokefountain.Models.JokeData;
 
 public interface DownloadSeed {
 
-    Joke getData();
+    JokeData getData();
 }

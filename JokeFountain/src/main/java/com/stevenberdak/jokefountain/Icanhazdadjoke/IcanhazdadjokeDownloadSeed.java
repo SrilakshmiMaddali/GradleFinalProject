@@ -1,8 +1,7 @@
 package com.stevenberdak.jokefountain.Icanhazdadjoke;
 
 import com.stevenberdak.jokefountain.DownloadSeed;
-import com.stevenberdak.jokefountain.LibStrings;
-import com.stevenberdak.jokefountain.Models.Joke;
+import com.stevenberdak.jokefountain.Models.JokeData;
 
 import java.io.IOException;
 
@@ -25,22 +24,22 @@ public class IcanhazdadjokeDownloadSeed implements DownloadSeed {
     }
 
     @Override
-    public Joke getData() {
+    public JokeData getData() {
         IcanhazdadjokeService service = retroFit.create(IcanhazdadjokeService.class);
 
-        Call<IcanhazdadjokeResponseModel> callIchdjResponseMode = service.jokes();
+        Call<IcanhazdadjokeResponseModel> call = service.jokes();
 
         IcanhazdadjokeResponseModel response = null;
         try {
-            response = callIchdjResponseMode.execute().body();
+            response = call.execute().body();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         if (response != null && response.status == 200)
-            return new Joke(response.joke, null);
+            return new JokeData(response.joke, null, JokeData.STATUS_OK);
         else
-            return new Joke(LibStrings.JOKE_ERROR, null);
+            return new JokeData(null, null, JokeData.STATUS_ERROR);
     }
 
     public interface IcanhazdadjokeService {

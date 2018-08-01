@@ -1,7 +1,6 @@
 import com.stevenberdak.jokefountain.Icanhazdadjoke.IcanhazdadjokeDownloadSeed;
 import com.stevenberdak.jokefountain.JokeSource;
-import com.stevenberdak.jokefountain.LibStrings;
-import com.stevenberdak.jokefountain.Models.Joke;
+import com.stevenberdak.jokefountain.Models.JokeData;
 
 import org.junit.Test;
 
@@ -15,12 +14,12 @@ public class JokeSourceTest {
     public void nextJoke_HasData() {
         JokeSource jokeSource = new JokeSource();
 
-        Joke testJoke = jokeSource.nextJoke(new IcanhazdadjokeDownloadSeed());
+        JokeData testJokeData = jokeSource.nextJoke(new IcanhazdadjokeDownloadSeed());
 
-        assertTrue(testJoke.jokeBody.length() > 0);
+        assertTrue(testJokeData.jokeBody.length() > 0);
 
-        assertThat(testJoke.jokeBody, not(LibStrings.JOKE_ERROR));
+        assertThat(testJokeData.statusCode, not(JokeData.STATUS_ERROR));
 
-        System.out.println(testJoke.toString());
+        System.out.println(testJokeData.toString());
     }
 }

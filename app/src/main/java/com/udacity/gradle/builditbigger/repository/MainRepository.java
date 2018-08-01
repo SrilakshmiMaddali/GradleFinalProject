@@ -6,9 +6,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.util.Log;
 
-import com.stevenberdak.jokefountain.Models.Joke;
+import com.stevenberdak.jokefountain.Models.JokeData;
 import com.udacity.gradle.builditbigger.AppUtils;
 import com.udacity.gradle.builditbigger.R;
 
@@ -17,14 +16,14 @@ public class MainRepository {
     public static final String BROADCAST_IN_JOKE = "com.udacity.gradle.builditbigger.BROADCAST_IN_JOKE";
     public static final String BUNDLE_KEY_JOKE_BODY = "joke_body";
     public static final String BUNDLE_KEY_JOKE_OPT_FOLLOWUP = "joke_followup";
+    public static final String BUNDLE_KEY_JOKE_STATUS_CODE = "joke_status";
     private static final int NEXT_JOKE_SERVICE_ID = 1357908;
     private BroadcastReceiver mBroadcastReceiver;
     private IntentFilter mIntentFilter;
-    private MutableLiveData<Joke> mCurrentJoke, mCachedJoke;
+    private MutableLiveData<JokeData> mCurrentJoke;
 
     public MainRepository() {
         mCurrentJoke = new MutableLiveData<>();
-        mCachedJoke = new MutableLiveData<>();
     }
 
     public void registerReceiver(Context ctx) {
@@ -40,20 +39,16 @@ public class MainRepository {
         ctx.unregisterReceiver(mBroadcastReceiver);
     }
 
-    public void registerJokeObserver(Observer<Joke> observer) {
+    public void registerJokeObserver(Observer<JokeData> observer) {
         mCurrentJoke.observeForever(observer);
     }
 
-    public void unregisterJokeObserver(Observer<Joke> observer) {
+    public void unregisterJokeObserver(Observer<JokeData> observer) {
         mCurrentJoke.removeObserver(observer);
     }
 
     public void getNextJoke(Context ctx) {
-        mCurrentJoke.setValue(mCachedJoke.getValue());
-        NextJokeService.enqueueWork(ctx, NextJokeService.class, NEXT_JOKE_SERVICE_ID, new Intent());
-    }
-
-    public void initJokeRepository(Context ctx) {
+        mCurrentJoke.setValue(null);
         NextJokeService.enqueueWork(ctx, NextJokeService.class, NEXT_JOKE_SERVICE_ID, new Intent());
     }
 
@@ -61,16 +56,16 @@ public class MainRepository {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null)
-                if (intent.getAction().equals(BROADCAST_IN_JOKE)) {
-                    String jokeBody = intent.getStringExtra(BUNDLE_KEY_JOKE_BODY);
-                    if (jokeBody == null) jokeBody = context.getString(R.string.error_joke);
-                    String jokeFollowUp = intent.getStringExtra(BUNDLE_KEY_JOKE_OPT_FOLLOWUP);
-                    if (jokeFollowUp == null) jokeFollowUp = "";
-                    mCachedJoke.setValue(new Joke(jokeBody, jokeFollowUp));
-                } else {
-                    AppUtils.makeNormalToast(context, context.getString(R.string.error_joke));
-                }
+            if (intent.getAction() == null) return;
+
+            if (intent.getAction().equals(BROADCAST_IN_JOKE)) {
+                String jokeBody = intent.getStringExtra(BUNDLE_KEY_JOKE_BODY);
+                String jokeFollowUp = intent.getStringExtra(BUNDLE_KEY_JOKE_OPT_FOLLOWUP);
+                int jokeStatusCode = intent.getIntExtra(BUNDLE_KEY_JOKE_STATUS_CODE, JokeData.STATUS_ERROR);
+                mCurrentJoke.setValue(new JokeData(jokeBody, jokeFollowUp, jokeStatusCode));
+            } else {
+                AppUtils.makeNormalToast(context, context.getString(R.string.error_retrieving_joke_from_source));
+            }
         }
     }
 }

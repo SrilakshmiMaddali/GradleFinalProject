@@ -6,5 +6,11 @@
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="placeholder">PlaceHolder</string>
     <string name="go_back">Go back</string>
-    <string name="error_joke">Error retrieving joke</string>
+    <string name="error_retrieving_joke">Error retrieving joke</string>
+    <string name="error_displaying_joke">Error displaying joke</string>
+    <string name="ok">@android:string/ok</string>
+    <string name="error_retrieving_joke_from_source">Error retrieving joke from data source</string>
+    <string name="error_face">;(</string>
+    <string name="fatal_error">Fatal error</string>
+    <string name="no_network">No network available</string>
 </resources>

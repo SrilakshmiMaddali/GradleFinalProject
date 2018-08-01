@@ -23,7 +23,6 @@ public class MainRepositoryTest {
         mMainRepository.getNextJoke(mMockContext);
 
 
-
         mMainRepository.deregisterReceiver(mMockContext);
     }
 }
