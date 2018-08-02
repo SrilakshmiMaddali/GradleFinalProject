@@ -28,5 +28,5 @@ Gradle to manage apps of increasing complexity. You'll learn to:
 
 <p align="center">
 <img src="https://github.com/StevenBerdak/GradleFinalProject/blob/master/github_resources/final_gradle_project_joke.gif" width="400px" />
-<img src="https://github.com/StevenBerdak/GradleFinalProject/blob/master/github_resources/final_gradle_project_loading.gif" width="400px" />
+<img src="https://github.com/StevenBerdak/GradleFinalProject/blob/master/github_resources/gradle_final_project_loading.gif" width="400px" />
 </p>
