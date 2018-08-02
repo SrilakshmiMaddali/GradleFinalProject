@@ -14,8 +14,8 @@
  "description": "This is an API",
  "discoveryVersion": "v1",
  "icons": {
-  "x16": "http://www.google.com/images/icons/product/search-16.gif",
-  "x32": "http://www.google.com/images/icons/product/search-32.gif"
+  "x16": "https://www.gstatic.com/images/branding/product/1x/googleg_16dp.png",
+  "x32": "https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png"
  },
  "id": "myApi:v1",
  "kind": "discovery#restDescription",
@@ -23,9 +23,9 @@
   "getJoke": {
    "httpMethod": "GET",
    "id": "myApi.getJoke",
-   "path": "mybean",
+   "path": "jokebean",
    "response": {
-    "$ref": "MyBean"
+    "$ref": "JokeBean"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"
@@ -104,6 +104,22 @@
  "protocol": "rest",
  "rootUrl": "https://myApplicationId.appspot.com/_ah/api/",
  "schemas": {
+  "JokeBean": {
+   "id": "JokeBean",
+   "properties": {
+    "jokeBody": {
+     "type": "string"
+    },
+    "jokeFollowUp": {
+     "type": "string"
+    },
+    "jokeStatus": {
+     "format": "int32",
+     "type": "integer"
+    }
+   },
+   "type": "object"
+  },
   "MyBean": {
    "id": "MyBean",
    "properties": {

@@ -4,7 +4,6 @@ import com.stevenberdak.jokefountain.Models.JokeData;
 
 public class JokeSource {
 
-    private static JokeSource instance;
     private DownloadSeed downloadSeed;
 
     public JokeSource() {
@@ -22,10 +21,5 @@ public class JokeSource {
 
     public JokeData nextJoke() {
         return downloadSeed.getData();
-    }
-
-    public static JokeSource getInstance() {
-        if (instance == null ) instance = new JokeSource();
-        return instance;
     }
 }

@@ -2,70 +2,74 @@ package com.udacity.gradle.builditbigger.repository;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.os.AsyncTask;
+import android.util.Log;
 
-import com.stevenberdak.jokefountain.Models.JokeData;
-import com.udacity.gradle.builditbigger.AppUtils;
-import com.udacity.gradle.builditbigger.R;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.udacity.gradle.builditbigger.backend.myApi.MyApi;
+import com.udacity.gradle.builditbigger.backend.myApi.model.JokeBean;
+import com.udacity.gradle.builditbigger.models.JokeData;
 
-public class MainRepository {
+import java.io.IOException;
 
-    public static final String BROADCAST_IN_JOKE = "com.udacity.gradle.builditbigger.BROADCAST_IN_JOKE";
-    public static final String BUNDLE_KEY_JOKE_BODY = "joke_body";
-    public static final String BUNDLE_KEY_JOKE_OPT_FOLLOWUP = "joke_followup";
-    public static final String BUNDLE_KEY_JOKE_STATUS_CODE = "joke_status";
-    private static final int NEXT_JOKE_SERVICE_ID = 1357908;
-    private BroadcastReceiver mBroadcastReceiver;
-    private IntentFilter mIntentFilter;
-    private MutableLiveData<JokeData> mCurrentJoke;
+public class MainRepository implements MainRepositoryInterface {
 
-    public MainRepository() {
-        mCurrentJoke = new MutableLiveData<>();
+    private static MainRepository mInstance;
+    private static final MutableLiveData<JokeData> mJokeData = new MutableLiveData<>();
+
+    private MainRepository() {
+
     }
 
-    public void registerReceiver(Context ctx) {
-        if (mIntentFilter == null) {
-            mIntentFilter = new IntentFilter();
-            mIntentFilter.addAction(BROADCAST_IN_JOKE);
-        }
-        if (mBroadcastReceiver == null) mBroadcastReceiver = new MainRepositoryBroadcastReceiver();
-        ctx.registerReceiver(mBroadcastReceiver, mIntentFilter);
+    public static MainRepository getInstance() {
+        if (null == mInstance) mInstance = new MainRepository();
+        return mInstance;
     }
 
-    public void deregisterReceiver(Context ctx) {
-        ctx.unregisterReceiver(mBroadcastReceiver);
+    @Override
+    public void addObserver(Observer<JokeData> observer) {
+        mJokeData.observeForever(observer);
     }
 
-    public void registerJokeObserver(Observer<JokeData> observer) {
-        mCurrentJoke.observeForever(observer);
+    @Override
+    public void removeObserver(Observer<JokeData> observer) {
+        mJokeData.removeObserver(observer);
     }
 
-    public void unregisterJokeObserver(Observer<JokeData> observer) {
-        mCurrentJoke.removeObserver(observer);
+    @Override
+    public void initNextJoke() {
+        new FetchJokeAsyncTask().execute();
     }
 
-    public void getNextJoke(Context ctx) {
-        mCurrentJoke.setValue(null);
-        NextJokeService.enqueueWork(ctx, NextJokeService.class, NEXT_JOKE_SERVICE_ID, new Intent());
-    }
+    private static class FetchJokeAsyncTask extends AsyncTask<Void, Void, JokeData> {
 
-    private class MainRepositoryBroadcastReceiver extends BroadcastReceiver {
+        private static MyApi myApiService = null;
 
         @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() == null) return;
-
-            if (intent.getAction().equals(BROADCAST_IN_JOKE)) {
-                String jokeBody = intent.getStringExtra(BUNDLE_KEY_JOKE_BODY);
-                String jokeFollowUp = intent.getStringExtra(BUNDLE_KEY_JOKE_OPT_FOLLOWUP);
-                int jokeStatusCode = intent.getIntExtra(BUNDLE_KEY_JOKE_STATUS_CODE, JokeData.STATUS_ERROR);
-                mCurrentJoke.setValue(new JokeData(jokeBody, jokeFollowUp, jokeStatusCode));
-            } else {
-                AppUtils.makeNormalToast(context, context.getString(R.string.error_retrieving_joke_from_source));
+        protected JokeData doInBackground(Void... voids) {
+            if (myApiService == null) {
+                MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                        .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+                        .setGoogleClientRequestInitializer(abstractGoogleClientRequest -> abstractGoogleClientRequest.setDisableGZipContent(true));
+                myApiService = builder.build();
             }
+
+            try {
+                JokeBean bean = myApiService.getJoke().execute();
+                return new JokeData(bean.getJokeBody(),
+                        bean.getJokeFollowUp(),
+                        bean.getJokeStatus());
+            } catch (IOException e) {
+                e.printStackTrace();
+                return new JokeData(null, null, JokeData.STATUS_ERROR);
+            }
+        }
+
+        @Override
+        protected void onPostExecute(JokeData jokeData) {
+            Log.v(getClass().getSimpleName(), "Joke data received, status code = " + jokeData.statusCode);
+            mJokeData.setValue(jokeData);
         }
     }
 }

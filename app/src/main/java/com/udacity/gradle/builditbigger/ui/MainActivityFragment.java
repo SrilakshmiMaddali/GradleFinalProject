@@ -18,9 +18,9 @@ import android.widget.TextView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.stevenberdak.displaything.DisplayThingActivity;
-import com.stevenberdak.jokefountain.Models.JokeData;
 import com.udacity.gradle.builditbigger.AppUtils;
 import com.udacity.gradle.builditbigger.R;
+import com.udacity.gradle.builditbigger.models.JokeData;
 import com.udacity.gradle.builditbigger.viewmodels.MainViewModel;
 
 import butterknife.BindView;
@@ -43,9 +43,6 @@ public class MainActivityFragment extends Fragment {
 
     private MainViewModel mViewModel;
     private Observer<JokeData> mJokeObserver;
-
-    public MainActivityFragment() {
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -75,22 +72,19 @@ public class MainActivityFragment extends Fragment {
         } else
             displayErrorSnackbar(getString(R.string.fatal_error));
 
-        //Set the click listener to tell the ViewModel to retrieve a new joke.
-        mButtonTellJoke.setOnClickListener(v -> attachObserver());
+        setClickListener();
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        mProgressBar.setVisibility(View.INVISIBLE);
-
-        mViewModel.registerLifecycleOwner(this);
+        clearViewState();
 
         //Initialize joke.
         if (getContext() != null) {
             if (AppUtils.isNetworkAvailable(getContext())) {
-                mViewModel.nextJoke();
+                mViewModel.initNextJoke();
             }
         } else displayErrorSnackbar(getString(R.string.fatal_error));
     }
@@ -98,14 +92,45 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        mViewModel.unregisterJokeObserver(mJokeObserver);
+
+        //Clear the observer.
+        mViewModel.removeJokeObserver(mJokeObserver);
         mJokeObserver = null;
     }
 
-    private void attachObserver() {
-        mTVStatusMessage.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
+    public void setClickListener() {
+        //Set the click listener to tell the ViewModel to retrieve a new joke.
+        mButtonTellJoke.setOnClickListener(v -> beginObserving());
+    }
 
+    public void clearViewState() {
+        setProgressBarVisible(false);
+        setErrorMessageVisible(false);
+    }
+
+    public void setProgressBarVisible(boolean visible) {
+        if (visible) mProgressBar.setVisibility(View.VISIBLE);
+        else mProgressBar.setVisibility(View.INVISIBLE);
+    }
+
+    public void setErrorMessageVisible(boolean visible) {
+        if (visible) mTVStatusMessage.setVisibility(View.VISIBLE);
+        else mTVStatusMessage.setVisibility(View.INVISIBLE);
+    }
+
+    private void beginObserving() {
+        setErrorMessageVisible(false);
+        setProgressBarVisible(true);
+
+        if (mViewModel.jokeStatus() == JokeData.STATUS_ERROR) mViewModel.initNextJoke();
+
+        //Clear observer
+        if (mJokeObserver != null) {
+            mViewModel.removeJokeObserver(mJokeObserver);
+            mJokeObserver = null;
+        }
+
+        //Ensure that network is available.
         try {
             if (getContext() == null) throw new NullPointerException();
             boolean networkAvailable = AppUtils.isNetworkAvailable(getContext());
@@ -118,17 +143,17 @@ public class MainActivityFragment extends Fragment {
             return;
         }
 
-        if (mJokeObserver == null) {
-            //Call tellJoke when the current joke changes.
-            mJokeObserver = this::tellJoke;
-            mViewModel.registerJokeObserver(this, mJokeObserver);
-        }
+        //Call tellJoke when the current joke changes.
+        mJokeObserver = this::tellJoke;
+
+        //Add observer to the view model.
+        mViewModel.addJokeObserver(this, mJokeObserver);
     }
 
     private void displayErrorSnackbar(String message) {
-        mProgressBar.setVisibility(View.INVISIBLE);
+        setProgressBarVisible(false);
+        setErrorMessageVisible(true);
         AppUtils.summonSnackbarSelfClosing(getView(), message);
-        mTVStatusMessage.setVisibility(View.VISIBLE);
     }
 
     public void handleJokeError() {
@@ -147,6 +172,7 @@ public class MainActivityFragment extends Fragment {
     }
 
     public void tellJoke(JokeData jokeData) {
+        //Check if data is valid.
         if (jokeData == null || jokeData.statusCode == JokeData.STATUS_EMPTY) return;
         if (jokeData.statusCode == JokeData.STATUS_ERROR) {
             handleJokeError();
@@ -166,6 +192,7 @@ public class MainActivityFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Make sure the Activity successfully received a joke.
         if (requestCode == DISPLAY_THING_REQUEST_CODE && resultCode == Activity.RESULT_CANCELED)
             displayErrorSnackbar(getString(R.string.error_displaying_joke));
     }

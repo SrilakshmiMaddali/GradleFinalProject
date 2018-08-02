@@ -17,6 +17,7 @@ public class IcanhazdadjokeDownloadSeed implements DownloadSeed {
     private Retrofit retroFit;
 
     public IcanhazdadjokeDownloadSeed() {
+
         retroFit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(MoshiConverterFactory.create())
