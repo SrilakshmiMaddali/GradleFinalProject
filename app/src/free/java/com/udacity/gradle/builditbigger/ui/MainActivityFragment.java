@@ -19,6 +19,7 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.stevenberdak.displaything.DisplayThingActivity;
 import com.udacity.gradle.builditbigger.AppUtils;
+import com.udacity.gradle.builditbigger.IdlingResourceSingleton;
 import com.udacity.gradle.builditbigger.R;
 import com.udacity.gradle.builditbigger.models.JokeData;
 import com.udacity.gradle.builditbigger.viewmodels.MainViewModel;
@@ -87,6 +88,9 @@ public class MainActivityFragment extends Fragment {
                 mViewModel.initNextJoke();
             }
         } else displayErrorSnackbar(getString(R.string.fatal_error));
+
+        if (IdlingResourceSingleton.isActive())
+            IdlingResourceSingleton.getInstance().isIdle();
     }
 
     @Override
@@ -98,26 +102,45 @@ public class MainActivityFragment extends Fragment {
         mJokeObserver = null;
     }
 
+    /**
+     * Set the onClickListener for the 'Tell Joke' button
+     */
     public void setClickListener() {
         //Set the click listener to tell the ViewModel to retrieve a new joke.
         mButtonTellJoke.setOnClickListener(v -> beginObserving());
     }
 
+    /**
+     * Clears the view state for the loading and error indicator views.
+     */
     public void clearViewState() {
         setProgressBarVisible(false);
         setErrorMessageVisible(false);
     }
 
+    /**
+     * Sets the progress bar visbility.
+     *
+     * @param visible whether should be visible or not.
+     */
     public void setProgressBarVisible(boolean visible) {
         if (visible) mProgressBar.setVisibility(View.VISIBLE);
         else mProgressBar.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Sets the error message visbility.
+     *
+     * @param visible whether should be visible or not.
+     */
     public void setErrorMessageVisible(boolean visible) {
         if (visible) mTVStatusMessage.setVisibility(View.VISIBLE);
         else mTVStatusMessage.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * Start observing the data in the ViewModel.
+     */
     private void beginObserving() {
         setErrorMessageVisible(false);
         setProgressBarVisible(true);
@@ -148,14 +171,25 @@ public class MainActivityFragment extends Fragment {
 
         //Add observer to the view model.
         mViewModel.addJokeObserver(this, mJokeObserver);
+
+        if (IdlingResourceSingleton.isActive())
+            IdlingResourceSingleton.getInstance().isNotIdle();
     }
 
+    /**
+     * Display a snackbar with an error message.
+     *
+     * @param message
+     */
     private void displayErrorSnackbar(String message) {
         setProgressBarVisible(false);
         setErrorMessageVisible(true);
         AppUtils.summonSnackbarSelfClosing(getView(), message);
     }
 
+    /**
+     * Handle if an error joke was received and determine what actions to take.
+     */
     public void handleJokeError() {
         try {
             if (getContext() == null) throw new NullPointerException();
@@ -171,7 +205,15 @@ public class MainActivityFragment extends Fragment {
         displayErrorSnackbar(getString(R.string.error_retrieving_joke));
     }
 
+    /**
+     * Determines whether to tell joke or not and then displays it.
+     *
+     * @param jokeData The data for the joke.
+     */
     public void tellJoke(JokeData jokeData) {
+        if (IdlingResourceSingleton.isActive())
+            IdlingResourceSingleton.getInstance().isIdle();
+
         //Check if data is valid.
         if (jokeData == null || jokeData.statusCode == JokeData.STATUS_EMPTY) return;
         if (jokeData.statusCode == JokeData.STATUS_ERROR) {

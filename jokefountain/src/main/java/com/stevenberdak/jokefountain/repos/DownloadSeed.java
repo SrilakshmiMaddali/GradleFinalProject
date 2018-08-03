@@ -1,4 +1,4 @@
-package com.stevenberdak.jokefountain;
+package com.stevenberdak.jokefountain.repos;
 
 import com.stevenberdak.jokefountain.Models.JokeData;
 

@@ -19,3 +19,8 @@ app/src/androidTest/
 backend/build/tmp/
 displaything/libs/
 displaything/src/main/res/drawable/
+/app/app.iml
+backend/build/classes/java/main/com/udacity/gradle/builditbigger/backend/JokeBean.class
+backend/build/dev-appserver-out/
+backend/build/exploded-backend/
+backend/build/libs/

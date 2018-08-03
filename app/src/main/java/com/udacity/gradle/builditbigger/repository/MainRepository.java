@@ -42,6 +42,9 @@ public class MainRepository implements MainRepositoryInterface {
         new FetchJokeAsyncTask().execute();
     }
 
+    /**
+     * Fetches a joke from the endpoint and sets the value within the repository.
+     */
     private static class FetchJokeAsyncTask extends AsyncTask<Void, Void, JokeData> {
 
         private static MyApi myApiService = null;

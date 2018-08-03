@@ -14,8 +14,10 @@ public class DisplayThingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_thing);
 
+        //Fetch the extra String.
         String message = getIntent().getStringExtra(DISPLAY_THING_STRING_EXTRA);
 
+        //Check that string is valid and then either display it or exit with error code.
         if (message != null && message.length() > 0) {
             setResult(Activity.RESULT_OK);
             TextView textViewDisplayThing = findViewById(R.id.text_view_display_thing);

@@ -1,6 +1,6 @@
-import com.stevenberdak.jokefountain.repos.ichdj.IchdjDownloadSeed;
+import com.stevenberdak.jokefountain.Icanhazdadjoke.IcanhazdadjokeDownloadSeed;
 import com.stevenberdak.jokefountain.JokeSource;
-import com.stevenberdak.jokefountain.models.JokeData;
+import com.stevenberdak.jokefountain.Models.JokeData;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class JokeSourceTest {
     public void nextJoke_HasData() {
         JokeSource jokeSource = new JokeSource();
 
-        JokeData testJokeData = jokeSource.nextJoke(new IchdjDownloadSeed());
+        JokeData testJokeData = jokeSource.nextJoke(new IcanhazdadjokeDownloadSeed());
 
         assertTrue(testJokeData.jokeBody.length() > 0);
 
