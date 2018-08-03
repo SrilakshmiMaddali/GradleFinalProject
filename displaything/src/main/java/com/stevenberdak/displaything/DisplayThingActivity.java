@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 public class DisplayThingActivity extends AppCompatActivity {
 
-    public static String DISPLAY_THING_STRING_EXTRA = "display_thing_string_extra";
+    public static final String DISPLAY_THING_STRING_EXTRA = "display_thing_string_extra";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

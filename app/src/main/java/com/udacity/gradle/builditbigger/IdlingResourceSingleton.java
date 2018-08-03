@@ -6,7 +6,7 @@ import android.support.test.espresso.idling.CountingIdlingResource;
 public class IdlingResourceSingleton {
 
     private static IdlingResourceSingleton mInstance;
-    private CountingIdlingResource mCountingIdlingResource;
+    private final CountingIdlingResource mCountingIdlingResource;
 
     private IdlingResourceSingleton() {
         mCountingIdlingResource = new CountingIdlingResource("IdlingResourceSingleton");

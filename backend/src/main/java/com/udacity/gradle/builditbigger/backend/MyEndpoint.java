@@ -21,7 +21,7 @@ import javax.inject.Named;
 )
 public class MyEndpoint {
 
-    private JokeSource source = new JokeSource();
+    private final JokeSource source = new JokeSource();
 
     /** A simple endpoint method that takes a name and says Hi back */
     @ApiMethod(name = "sayHi")

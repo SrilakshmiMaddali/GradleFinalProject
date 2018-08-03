@@ -14,7 +14,7 @@ public class MainViewModel extends AndroidViewModel implements MainViewModelInte
 
     private final MainRepository mRepository;
     private final MutableLiveData<JokeData> mJokeData;
-    private Observer<JokeData> mRepositoryJokeObserver;
+    private final Observer<JokeData> mRepositoryJokeObserver;
 
     public MainViewModel(@NonNull Application application) {
         super(application);

@@ -95,7 +95,7 @@ public class MainActivityFragment extends Fragment {
     /**
      * Set the onClickListener for the 'Tell Joke' button
      */
-    public void setClickListener() {
+    private void setClickListener() {
         //Set the click listener to tell the ViewModel to retrieve a new joke.
         mButtonTellJoke.setOnClickListener(v -> beginObserving());
     }
@@ -103,27 +103,27 @@ public class MainActivityFragment extends Fragment {
     /**
      * Clears the view state for the loading and error indicator views.
      */
-    public void clearViewState() {
+    private void clearViewState() {
         setProgressBarVisible(false);
         setErrorMessageVisible(false);
     }
 
     /**
-     * Sets the progress bar visbility.
+     * Sets the progress bar visibility.
      *
      * @param visible whether should be visible or not.
      */
-    public void setProgressBarVisible(boolean visible) {
+    private void setProgressBarVisible(boolean visible) {
         if (visible) mProgressBar.setVisibility(View.VISIBLE);
         else mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     /**
-     * Sets the error message visbility.
+     * Sets the error message visibility.
      *
      * @param visible whether should be visible or not.
      */
-    public void setErrorMessageVisible(boolean visible) {
+    private void setErrorMessageVisible(boolean visible) {
         if (visible) mTVStatusMessage.setVisibility(View.VISIBLE);
         else mTVStatusMessage.setVisibility(View.INVISIBLE);
     }
@@ -169,7 +169,7 @@ public class MainActivityFragment extends Fragment {
     /**
      * Display a snackbar with an error message.
      *
-     * @param message
+     * @param message The message to display.
      */
     private void displayErrorSnackbar(String message) {
         setProgressBarVisible(false);
@@ -180,7 +180,7 @@ public class MainActivityFragment extends Fragment {
     /**
      * Handle if an error joke was received and determine what actions to take.
      */
-    public void handleJokeError() {
+    private void handleJokeError() {
         try {
             if (getContext() == null) throw new NullPointerException();
             boolean networkAvailable = AppUtils.isNetworkAvailable(getContext());
@@ -200,7 +200,7 @@ public class MainActivityFragment extends Fragment {
      *
      * @param jokeData The data for the joke.
      */
-    public void tellJoke(JokeData jokeData) {
+    private void tellJoke(JokeData jokeData) {
         if (IdlingResourceSingleton.isActive())
             IdlingResourceSingleton.getInstance().isIdle();
 
