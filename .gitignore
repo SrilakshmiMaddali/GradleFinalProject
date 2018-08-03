@@ -24,3 +24,7 @@ backend/build/classes/java/main/com/udacity/gradle/builditbigger/backend/JokeBea
 backend/build/dev-appserver-out/
 backend/build/exploded-backend/
 backend/build/libs/
+/jokefountain/jokefountain.iml
+app/src/test/
+backend/build/endpointsClientLibs/
+backend/build/endpointsOpenApiDocs/
