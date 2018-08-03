@@ -1,4 +1,4 @@
-package com.stevenberdak.jokefountain.Models;
+package com.stevenberdak.jokefountain.models;
 
 public class JokeData {
 
