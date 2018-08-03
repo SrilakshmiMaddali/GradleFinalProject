@@ -19,3 +19,7 @@ allprojects {
         jcenter()
     }
 }
+
+task runTest(type: GradleBuild) {
+    tasks = [ ':backend:appengineStart', ':app:connectedFreeDebugAndroidTest' ]
+}
