@@ -20,9 +20,9 @@ import com.google.android.gms.ads.AdView;
 import com.stevenberdak.displaything.DisplayThingActivity;
 import com.udacity.gradle.builditbigger.AppUtils;
 import com.udacity.gradle.builditbigger.IdlingResourceSingleton;
-import com.udacity.gradle.builditbigger.R;
 import com.udacity.gradle.builditbigger.models.JokeData;
 import com.udacity.gradle.builditbigger.viewmodels.MainViewModel;
+import com.udacity.gradle.builditbigger.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -179,7 +179,7 @@ public class MainActivityFragment extends Fragment {
     /**
      * Display a snackbar with an error message.
      *
-     * @param message
+     * @param message The message to display.
      */
     private void displayErrorSnackbar(String message) {
         setProgressBarVisible(false);
