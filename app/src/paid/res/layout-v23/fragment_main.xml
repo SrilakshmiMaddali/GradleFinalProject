@@ -60,10 +60,10 @@
         android:visibility="invisible"
         android:textSize="42sp"
         android:textStyle="bold"
-        ads:layout_constraintBottom_toTopOf="@+id/instructions_text_view"
-        ads:layout_constraintEnd_toEndOf="parent"
-        ads:layout_constraintStart_toStartOf="parent"
-        ads:layout_constraintTop_toBottomOf="@+id/button_tell_joke" />
+        app:layout_constraintBottom_toTopOf="@+id/instructions_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_tell_joke" />
 
     <TextView
         android:id="@+id/instructions_text_view"

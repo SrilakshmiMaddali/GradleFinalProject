@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.udacity.gradle.builditbigger.IdlingResourceSingleton;
+import com.udacity.gradle.builditbigger.R;
 
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
@@ -24,6 +25,8 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.core.AllOf.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
