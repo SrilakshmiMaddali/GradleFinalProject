@@ -13,7 +13,7 @@ import retrofit2.http.Headers;
 public class IchdjDownloadSeed implements com.stevenberdak.jokefountain.repos.DownloadSeed {
 
     private static final String BASE_URL = "https://icanhazdadjoke.com/";
-    private Retrofit retroFit;
+    private final Retrofit retroFit;
 
     public IchdjDownloadSeed() {
 

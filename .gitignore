@@ -15,7 +15,6 @@
 .idea/runConfigurations.xml
 .idea/vcs.xml
 JokeFountain/libs/
-app/src/androidTest/
 backend/build/tmp/
 displaything/libs/
 displaything/src/main/res/drawable/
