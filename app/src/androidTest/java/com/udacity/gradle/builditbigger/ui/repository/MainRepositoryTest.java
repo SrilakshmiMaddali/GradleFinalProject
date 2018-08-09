@@ -2,7 +2,6 @@ package com.udacity.gradle.builditbigger.ui.repository;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Observer;
-import android.support.annotation.Nullable;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.rule.ActivityTestRule;
@@ -48,6 +47,7 @@ public class MainRepositoryTest {
         MainRepository.getInstance().addObserver(jokeDataObserver);
         MainRepository.getInstance().initNextJoke();
 
-        assert (jokeDataMutableLiveData.getValue() != null);
+        assert (jokeDataMutableLiveData.getValue() != null &&
+                jokeDataMutableLiveData.getValue().statusCode == JokeData.STATUS_OK);
     }
 }
