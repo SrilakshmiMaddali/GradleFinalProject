@@ -7,10 +7,11 @@ import com.stevenberdak.jokefountain.JokeSource;
 import com.stevenberdak.jokefountain.models.JokeData;
 import com.stevenberdak.jokefountain.repos.ichdj.IchdjDownloadSeed;
 
-
 import javax.inject.Named;
 
-/** An endpoint class we are exposing */
+/**
+ * An endpoint class we are exposing
+ */
 @Api(
         name = "myApi",
         version = "v1",
@@ -24,9 +25,12 @@ public class MyEndpoint {
 
     private final JokeSource source = new JokeSource();
 
-    /** A simple endpoint method that takes a name and says Hi back */
+    /**
+     * A simple endpoint method that takes a name and says Hi back
+     */
     @ApiMethod(name = "sayHi")
     public MyBean sayHi(@Named("name") String name) {
+
         MyBean response = new MyBean();
         response.setData("Hi, " + name);
 

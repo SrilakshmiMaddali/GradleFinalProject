@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         if (IdlingResourceSingleton.isActive())
-            IdlingResourceSingleton.getInstance().isNotIdle();
+            IdlingResourceSingleton.getInstance().plusOne();
     }
 
 

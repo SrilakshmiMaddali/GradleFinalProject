@@ -27,7 +27,6 @@ import com.udacity.gradle.builditbigger.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -90,7 +89,7 @@ public class MainActivityFragment extends Fragment {
         } else displayErrorSnackbar(getString(R.string.fatal_error));
 
         if (IdlingResourceSingleton.isActive())
-            IdlingResourceSingleton.getInstance().isIdle();
+            IdlingResourceSingleton.getInstance().minusOne();
     }
 
     @Override
@@ -173,7 +172,7 @@ public class MainActivityFragment extends Fragment {
         mViewModel.addJokeObserver(this, mJokeObserver);
 
         if (IdlingResourceSingleton.isActive())
-            IdlingResourceSingleton.getInstance().isNotIdle();
+            IdlingResourceSingleton.getInstance().plusOne();
     }
 
     /**
@@ -212,7 +211,7 @@ public class MainActivityFragment extends Fragment {
      */
     public void tellJoke(JokeData jokeData) {
         if (IdlingResourceSingleton.isActive())
-            IdlingResourceSingleton.getInstance().isIdle();
+            IdlingResourceSingleton.getInstance().minusOne();
 
         //Check if data is valid.
         if (jokeData == null || jokeData.statusCode == JokeData.STATUS_EMPTY) return;

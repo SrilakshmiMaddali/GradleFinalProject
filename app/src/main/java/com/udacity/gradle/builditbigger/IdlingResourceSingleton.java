@@ -21,17 +21,15 @@ public class IdlingResourceSingleton {
         return mInstance == null;
     }
 
-    public void isNotIdle() {
-        if (mCountingIdlingResource.isIdleNow())
+    public void plusOne() {
             mCountingIdlingResource.increment();
     }
 
-    public void isIdle() {
-        if (!mCountingIdlingResource.isIdleNow())
+    public void minusOne() {
             mCountingIdlingResource.decrement();
     }
 
-    public IdlingResource getIdlingResource() {
+    public CountingIdlingResource getIdlingResource() {
         return mCountingIdlingResource;
     }
 }
